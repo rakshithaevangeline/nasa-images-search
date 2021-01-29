@@ -1,0 +1,23 @@
+{
+  "name": "nasa-images-search",
+  "version": "1.0.0",
+  "description": "Search images from api.nasa.gov",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rakshithaevangeline/nasa-images-search.git"
+  },
+  "keywords": [
+    "images",
+    "search"
+  ],
+  "author": "Rakshitha Evangeline",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rakshithaevangeline/nasa-images-search/issues"
+  },
+  "homepage": "https://github.com/rakshithaevangeline/nasa-images-search#readme"
+}
