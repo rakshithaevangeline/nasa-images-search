@@ -15,25 +15,25 @@ const getDataForQuery = (query) => {
     .get("https://images-api.nasa.gov/search", config)
     .then((res) => {
       let fullCollection = res.data;
+      let imageThumbnails = document.querySelectorAll(".image-content img");
+      let imageDescriptions = document.querySelectorAll(".thumbnail-description");
+      
 
       // Get the first three items in the collection
       let firstThreeItems = fullCollection.collection.items.slice(0, 3);
       console.log(firstThreeItems);
 
-      // Get a link for each item's thumbnail
-      firstThreeItems.forEach((item) => {
-        console.log(item.links[0].href);
-      });
+      // Use for loop to link image url to corresponding thumbnail
+      for (let i = 0; i < firstThreeItems.length; i++) {
+        let imageLink = firstThreeItems[i].links[0].href;
+        imageThumbnails[i].setAttribute("src", imageLink);
+      }
 
-      // Get the description for each item
-      firstThreeItems.forEach((item) => {
-        console.log(item.data[0].description);
-      });
-
-      // Get alt name for each item
-      firstThreeItems.forEach((item) => {
-        console.log(item.data[0].title);
-      });
+      // Link image description to corresponding paragraph
+      for (let i = 0; i < firstThreeItems.length; i++) {
+        let imageDescription = firstThreeItems[i].data[0].description;
+        imageDescriptions[i].innerHTML = imageDescription;
+      }
     })
     .catch((e) => {
       console.log(e);
@@ -44,7 +44,7 @@ const getDataForQuery = (query) => {
 document.addEventListener("DOMContentLoaded", () => {
   let button = document.querySelector("button");
   let textInput = document.querySelector("#text-input");
-
+  
 
   button.addEventListener("click", () => {
     getDataForQuery(textInput.value);
