@@ -1,0 +1,25 @@
+/* GLOBAL STYLES */
+body {
+  min-height: 100vh;
+}
+
+h1 {
+  font-size: 5vw;
+  text-align: center;
+}
+
+/* SEARCH BOX STYLES */
+.search-box {
+  display: flex;
+  margin: auto;
+}
+/* COLUMN STYLES */
+.gallery {
+  display: flex;
+  flex-direction: column;
+  margin-top: 2em;
+}
+
+.image-content {
+  display: flex;
+}
