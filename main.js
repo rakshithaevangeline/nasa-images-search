@@ -1,5 +1,7 @@
 let axios = require("axios");
 
+
+// Function to get thumbails and description for a query
 const getDataForQuery = (query) => {
   let config = {
     params: {
@@ -32,6 +34,7 @@ const getDataForQuery = (query) => {
     });
 };
 
+// Search using text input and button
 document.addEventListener("DOMContentLoaded", () => {
   let button = document.querySelector("button");
   let textInput = document.querySelector("#text-input");
