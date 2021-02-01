@@ -29,6 +29,11 @@ const getDataForQuery = (query) => {
       firstThreeItems.forEach((item) => {
         console.log(item.data[0].description);
       });
+
+      // Get alt name for each item
+      firstThreeItems.forEach((item) => {
+        console.log(item.data[0].title);
+      });
     })
     .catch((e) => {
       console.log(e);
@@ -39,6 +44,7 @@ const getDataForQuery = (query) => {
 document.addEventListener("DOMContentLoaded", () => {
   let button = document.querySelector("button");
   let textInput = document.querySelector("#text-input");
+
 
   button.addEventListener("click", () => {
     getDataForQuery(textInput.value);
