@@ -13,6 +13,14 @@ body {
   min-height: 100vh;
   position: relative;
 }
+.homepage:after {
+  bottom: 10px;
+  color: #fff;
+  content: "﹀";
+  font-size: 4vw;
+  position: absolute;
+  left: 50%;
+}
 
 h1 {
   color: #fff;
