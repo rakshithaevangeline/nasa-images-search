@@ -1,30 +1,62 @@
 /* GLOBAL STYLES */
 body {
+  font-family: Roboto, sans-serif; 
+}
+
+
+/* HOMEPAGE STYLES */
+.homepage {
+  background-image: url(./images/background-image.jpg);
+  background-position: top;
+  display: flex;
+  flex-direction: column;
   min-height: 100vh;
+  position: relative;
+}
+.homepage:after {
+  bottom: 10px;
+  color: #fff;
+  content: "﹀";
+  font-size: 4vw;
+  position: absolute;
+  left: 50%;
 }
 
 h1 {
+  color: #fff;
+  font-family: Raleway, sans-serif;
   font-size: 5vw;
+  font-weight: 100;
+  position: absolute;
+  top: 35%;
+  left: 34%;
   text-align: center;
 }
-
 /* SEARCH BOX STYLES */
-.search-box {
-  display: flex;
+.search-area {
   margin: auto;
 }
 
-
-/* COLUMN STYLES */
+/* GALLERY STYLES */
 .gallery {
+  box-sizing: border-box;
+  border: 15px solid #d4e8e7;
   display: flex;
   flex-direction: column;
-  margin-top: 2em;
 }
 .image-content {
+  box-sizing: border-box;
+  margin: 4px;
+  padding: 1.5px 3px;
   display: flex;
 }
-.image-content img {
+.thumbnail {
+  flex: 1 1 50px;
+}
+.thumbnail img {
   max-width: 300px;
   max-height: 300px;
+}
+.thumbnail-description {
+  padding: 2px 15px;
 }
