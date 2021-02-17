@@ -1,7 +1,6 @@
 (function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
 let axios = require("axios");
 
-
 // Function to get thumbails and description for a query
 const getDataForQuery = (query) => {
   let config = {
@@ -11,13 +10,13 @@ const getDataForQuery = (query) => {
   };
 
   // Get the entire collection for the query
-  axios
+  let downloadPromise = axios
     .get("https://images-api.nasa.gov/search", config)
     .then((res) => {
       let fullCollection = res.data;
       let imageThumbnails = document.querySelectorAll(".image-content img");
       let imageDescriptions = document.querySelectorAll(".thumbnail-description");
-      
+
 
       // Get the first three items in the collection
       let firstThreeItems = fullCollection.collection.items.slice(0, 3);
@@ -38,24 +37,34 @@ const getDataForQuery = (query) => {
     .catch((e) => {
       console.log(e);
     });
+
+  // return the promise so it can be accesed outside of this function
+  return downloadPromise;
 };
+
+// Function that's called when the button is clicked
+function handleClick(gallery, textInput) {
+  // Move to gallery only after the download has happened.
+  // i.e., only after the Promise from axios is fulfilled and not just pending
+
+  getDataForQuery(textInput.value).then(() => {
+    // Display gallery on click
+    gallery.style.display = "flex";
+
+    // Move the view to gallery div element after click
+    gallery.scrollIntoView(true);
+  });
+}
+
 
 // Search using text input and button
 document.addEventListener("DOMContentLoaded", () => {
   let button = document.querySelector("button");
   let textInput = document.querySelector("#text-input");
   let gallery = document.querySelector(".gallery");
-  
 
-  button.addEventListener("click", () => {
-    // Move the view to gallery div element after click
-    gallery.scrollIntoView(true);
-
-    // Get data for the given query 
-    getDataForQuery(textInput.value);
-  });
+  button.addEventListener("click", () => handleClick(gallery, textInput));
 });
-
 },{"axios":2}],2:[function(require,module,exports){
 module.exports = require('./lib/axios');
 },{"./lib/axios":4}],3:[function(require,module,exports){

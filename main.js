@@ -1,6 +1,5 @@
 let axios = require("axios");
 
-
 // Function to get thumbails and description for a query
 const getDataForQuery = (query) => {
   let config = {
@@ -10,13 +9,13 @@ const getDataForQuery = (query) => {
   };
 
   // Get the entire collection for the query
-  axios
+  let downloadPromise = axios
     .get("https://images-api.nasa.gov/search", config)
     .then((res) => {
       let fullCollection = res.data;
       let imageThumbnails = document.querySelectorAll(".image-content img");
       let imageDescriptions = document.querySelectorAll(".thumbnail-description");
-      
+
 
       // Get the first three items in the collection
       let firstThreeItems = fullCollection.collection.items.slice(0, 3);
@@ -37,19 +36,23 @@ const getDataForQuery = (query) => {
     .catch((e) => {
       console.log(e);
     });
+
+  // return the promise so it can be accesed outside of this function
+  return downloadPromise;
 };
 
 // Function that's called when the button is clicked
 function handleClick(gallery, textInput) {
+  // Move to gallery only after the download has happened.
+  // i.e., only after the Promise from axios is fulfilled and not just pending
 
-  // Get data for the given query
-  getDataForQuery(textInput.value);
+  getDataForQuery(textInput.value).then(() => {
+    // Display gallery on click
+    gallery.style.display = "flex";
 
-  // Display gallery on click
-  gallery.style.display = "flex";
-
-   // Move the view to gallery div element after click
-   gallery.scrollIntoView(true);
+    // Move the view to gallery div element after click
+    gallery.scrollIntoView(true);
+  });
 }
 
 
@@ -58,7 +61,6 @@ document.addEventListener("DOMContentLoaded", () => {
   let button = document.querySelector("button");
   let textInput = document.querySelector("#text-input");
   let gallery = document.querySelector(".gallery");
-
 
   button.addEventListener("click", () => handleClick(gallery, textInput));
 });
