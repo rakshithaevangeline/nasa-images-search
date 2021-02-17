@@ -43,9 +43,14 @@ const getDataForQuery = (query) => {
 document.addEventListener("DOMContentLoaded", () => {
   let button = document.querySelector("button");
   let textInput = document.querySelector("#text-input");
+  let gallery = document.querySelector(".gallery");
   
 
   button.addEventListener("click", () => {
+    // Move the view to gallery div element after click
+    gallery.scrollIntoView(true);
+
+    // Get data for the given query 
     getDataForQuery(textInput.value);
   });
 });
