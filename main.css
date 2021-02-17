@@ -41,8 +41,10 @@ h1 {
 .gallery {
   box-sizing: border-box;
   border: 15px solid #d4e8e7;
-  display: flex;
+  /* display ONLY after the button is clicked. Check js comments */
+  display: none;
   flex-direction: column;
+  
 }
 .image-content {
   box-sizing: border-box;

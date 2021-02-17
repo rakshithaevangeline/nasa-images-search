@@ -39,18 +39,26 @@ const getDataForQuery = (query) => {
     });
 };
 
+// Function that's called when the button is clicked
+function handleClick(gallery, textInput) {
+
+  // Get data for the given query
+  getDataForQuery(textInput.value);
+
+  // Display gallery on click
+  gallery.style.display = "flex";
+
+   // Move the view to gallery div element after click
+   gallery.scrollIntoView(true);
+}
+
+
 // Search using text input and button
 document.addEventListener("DOMContentLoaded", () => {
   let button = document.querySelector("button");
   let textInput = document.querySelector("#text-input");
   let gallery = document.querySelector(".gallery");
-  
 
-  button.addEventListener("click", () => {
-    // Move the view to gallery div element after click
-    gallery.scrollIntoView(true);
 
-    // Get data for the given query 
-    getDataForQuery(textInput.value);
-  });
+  button.addEventListener("click", () => handleClick(gallery, textInput));
 });
