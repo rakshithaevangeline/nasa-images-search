@@ -17,6 +17,7 @@ const getDataForQuery = (query) => {
       let imageThumbnails = document.querySelectorAll(".image-content img");
       let imageDescriptions = document.querySelectorAll(".thumbnail-description");
 
+      console.log(fullCollection.collection);
 
       // Get the first three items in the collection
       let firstThreeItems = fullCollection.collection.items.slice(0, 3);
