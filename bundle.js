@@ -1,8 +1,27 @@
 (function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
 let axios = require("axios");
 
-// Function to get thumbails and description for a query
-// Pass gallery as a parameter so it can be accessed within the scope
+// Create duplicates of gallery, populate it, and insert in the right place
+function duplicateGalleryAndPopulate(arrayOfItems, gallery, searchResultsArea) {
+  for (let i = 0; i < arrayOfItems.length; i++) {
+    // Make a copy of gallery
+    let gallerySearchResult = gallery.cloneNode(true);
+    gallerySearchResult.style.display = "block";
+
+    // Find img and description elements within each copy
+    let thumbnail = gallerySearchResult.querySelector(".thumbnail img");
+    let thumbDescription = gallerySearchResult.querySelector(
+      ".thumbnail-description");
+
+    thumbnail.setAttribute("src", arrayOfItems[i].links[0].href);
+    thumbDescription.innerHTML = arrayOfItems[i].data[0].description;
+
+    // Insert gallery copy inside #search-results-area
+    searchResultsArea.insertAdjacentElement("beforeend", gallerySearchResult);
+  }
+}
+
+// Get the required data from axios
 const getDataForQuery = (query, gallery, searchResultsArea) => {
   let config = {
     params: {
@@ -17,23 +36,7 @@ const getDataForQuery = (query, gallery, searchResultsArea) => {
       let arrayOfItems = fullCollection.collection.items;
       // console.log(arrayOfItems);
 
-      // Display images and description for query by making a copy of gallery
-      for (let i = 0; i < arrayOfItems.length; i++) {
-        // Make a copy of gallery
-        let gallerySearchResult = gallery.cloneNode(true);
-        gallerySearchResult.style.display = "block";
-
-        // Find img and description elements within each copy
-        let thumbnail = gallerySearchResult.querySelector(".thumbnail img");
-        let thumbDescription = gallerySearchResult.querySelector(
-                               ".thumbnail-description");
-
-        thumbnail.setAttribute("src", arrayOfItems[i].links[0].href);
-        thumbDescription.innerHTML = arrayOfItems[i].data[0].description;
-
-        // Insert gallery copy inside #search-results-area
-        searchResultsArea.insertAdjacentElement("beforeend", gallerySearchResult);
-      }
+      duplicateGalleryAndPopulate(arrayOfItems, gallery, searchResultsArea);
     })
     .catch((e) => {
       console.log(e);
@@ -42,6 +45,7 @@ const getDataForQuery = (query, gallery, searchResultsArea) => {
   // return the promise so it can be accesed outside of this function
   return downloadPromise;
 };
+
 
 // Function that's called when the button is clicked
 function handleClick(textInput, gallery, searchResultsArea,) {

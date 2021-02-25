@@ -1,7 +1,26 @@
 let axios = require("axios");
 
-// Function to get thumbails and description for a query
-// Pass gallery as a parameter so it can be accessed within the scope
+// Create duplicates of gallery, populate it, and insert in the right place
+function duplicateGalleryAndPopulate(arrayOfItems, gallery, searchResultsArea) {
+  for (let i = 0; i < arrayOfItems.length; i++) {
+    // Make a copy of gallery
+    let gallerySearchResult = gallery.cloneNode(true);
+    gallerySearchResult.style.display = "block";
+
+    // Find img and description elements within each copy
+    let thumbnail = gallerySearchResult.querySelector(".thumbnail img");
+    let thumbDescription = gallerySearchResult.querySelector(
+      ".thumbnail-description");
+
+    thumbnail.setAttribute("src", arrayOfItems[i].links[0].href);
+    thumbDescription.innerHTML = arrayOfItems[i].data[0].description;
+
+    // Insert gallery copy inside #search-results-area
+    searchResultsArea.insertAdjacentElement("beforeend", gallerySearchResult);
+  }
+}
+
+// Get the required data from axios
 const getDataForQuery = (query, gallery, searchResultsArea) => {
   let config = {
     params: {
@@ -16,23 +35,7 @@ const getDataForQuery = (query, gallery, searchResultsArea) => {
       let arrayOfItems = fullCollection.collection.items;
       // console.log(arrayOfItems);
 
-      // Display images and description for query by making a copy of gallery
-      for (let i = 0; i < arrayOfItems.length; i++) {
-        // Make a copy of gallery
-        let gallerySearchResult = gallery.cloneNode(true);
-        gallerySearchResult.style.display = "block";
-
-        // Find img and description elements within each copy
-        let thumbnail = gallerySearchResult.querySelector(".thumbnail img");
-        let thumbDescription = gallerySearchResult.querySelector(
-                               ".thumbnail-description");
-
-        thumbnail.setAttribute("src", arrayOfItems[i].links[0].href);
-        thumbDescription.innerHTML = arrayOfItems[i].data[0].description;
-
-        // Insert gallery copy inside #search-results-area
-        searchResultsArea.insertAdjacentElement("beforeend", gallerySearchResult);
-      }
+      duplicateGalleryAndPopulate(arrayOfItems, gallery, searchResultsArea);
     })
     .catch((e) => {
       console.log(e);
@@ -41,6 +44,7 @@ const getDataForQuery = (query, gallery, searchResultsArea) => {
   // return the promise so it can be accesed outside of this function
   return downloadPromise;
 };
+
 
 // Function that's called when the button is clicked
 function handleClick(textInput, gallery, searchResultsArea,) {
