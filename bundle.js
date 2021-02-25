@@ -2,37 +2,37 @@
 let axios = require("axios");
 
 // Function to get thumbails and description for a query
-const getDataForQuery = (query) => {
+// Pass gallery as a parameter so it can be accessed within the scope
+const getDataForQuery = (query, gallery, searchResultsArea) => {
   let config = {
     params: {
       q: query,
-    },
+    }
   };
 
-  // Get the entire collection for the query
   let downloadPromise = axios
     .get("https://images-api.nasa.gov/search", config)
     .then((res) => {
       let fullCollection = res.data;
-      let imageThumbnails = document.querySelectorAll(".image-content img");
-      let imageDescriptions = document.querySelectorAll(".thumbnail-description");
+      let arrayOfItems = fullCollection.collection.items;
+      // console.log(arrayOfItems);
 
-      console.log(fullCollection.collection);
+      // Display images and description for query by making a copy of gallery
+      for (let i = 0; i < arrayOfItems.length; i++) {
+        // Make a copy of gallery
+        let gallerySearchResult = gallery.cloneNode(true);
+        gallerySearchResult.style.display = "block";
 
-      // Get the first three items in the collection
-      let firstThreeItems = fullCollection.collection.items.slice(0, 3);
-      console.log(firstThreeItems);
+        // Find img and description elements within each copy
+        let thumbnail = gallerySearchResult.querySelector(".thumbnail img");
+        let thumbDescription = gallerySearchResult.querySelector(
+                               ".thumbnail-description");
 
-      // Use for loop to link image url to corresponding thumbnail
-      for (let i = 0; i < firstThreeItems.length; i++) {
-        let imageLink = firstThreeItems[i].links[0].href;
-        imageThumbnails[i].setAttribute("src", imageLink);
-      }
+        thumbnail.setAttribute("src", arrayOfItems[i].links[0].href);
+        thumbDescription.innerHTML = arrayOfItems[i].data[0].description;
 
-      // Link image description to corresponding paragraph
-      for (let i = 0; i < firstThreeItems.length; i++) {
-        let imageDescription = firstThreeItems[i].data[0].description;
-        imageDescriptions[i].innerHTML = imageDescription;
+        // Insert gallery copy inside #search-results-area
+        searchResultsArea.insertAdjacentElement("beforeend", gallerySearchResult);
       }
     })
     .catch((e) => {
@@ -44,16 +44,11 @@ const getDataForQuery = (query) => {
 };
 
 // Function that's called when the button is clicked
-function handleClick(gallery, textInput) {
-  // Move to gallery only after the download has happened.
+function handleClick(textInput, gallery, searchResultsArea,) {
+  // Move to gallery section only after the download has happened.
   // i.e., only after the Promise from axios is fulfilled and not just pending
-
-  getDataForQuery(textInput.value).then(() => {
-    // Display gallery on click
-    gallery.style.display = "flex";
-
-    // Move the view to gallery div element after click
-    gallery.scrollIntoView(true);
+  getDataForQuery(textInput.value, gallery, searchResultsArea).then(() => {
+    searchResultsArea.scrollIntoView(true);
   });
 }
 
@@ -63,8 +58,12 @@ document.addEventListener("DOMContentLoaded", () => {
   let button = document.querySelector("button");
   let textInput = document.querySelector("#text-input");
   let gallery = document.querySelector(".gallery");
+  let searchResultsArea = document.querySelector("#search-results-area");
 
-  button.addEventListener("click", () => handleClick(gallery, textInput));
+  button.addEventListener("click", () => {
+    handleClick(textInput, gallery, searchResultsArea);
+
+  });
 });
 },{"axios":2}],2:[function(require,module,exports){
 module.exports = require('./lib/axios');

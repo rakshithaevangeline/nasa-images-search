@@ -1,6 +1,6 @@
 /* GLOBAL STYLES */
 body {
-  font-family: Roboto, sans-serif; 
+  font-family: Roboto, sans-serif;
 }
 
 
@@ -38,13 +38,16 @@ h1 {
 }
 
 /* GALLERY STYLES */
+.search-results-area {
+  display: block;
+}
 .gallery {
   box-sizing: border-box;
   border: 15px solid #d4e8e7;
   /* display ONLY after the button is clicked. Check js comments */
   display: none;
   flex-direction: column;
-  
+
 }
 .image-content {
   box-sizing: border-box;
@@ -53,7 +56,7 @@ h1 {
   display: flex;
 }
 .thumbnail {
-  flex: 1 1 50px;
+  flex: 1 1 auto;
 }
 .thumbnail img {
   max-width: 300px;
