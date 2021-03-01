@@ -64,7 +64,9 @@ document.addEventListener("DOMContentLoaded", () => {
   let searchResultsArea = document.querySelector("#search-results-area");
 
   button.addEventListener("click", () => {
+    // Clear previous search result before new query
+    searchResultsArea.innerHTML = "";
+    
     handleClick(textInput, gallery, searchResultsArea);
-
   });
 });
