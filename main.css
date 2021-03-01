@@ -28,15 +28,23 @@ h1 {
   font-size: 5vw;
   font-weight: 100;
   position: absolute;
-  top: 35%;
+  top: 30%;
   left: 34%;
   text-align: center;
 }
 /* SEARCH BOX STYLES */
 .search-area {
   margin: auto;
+  position: relative;
+  
+}
+.radio-buttons {
+  margin-top: 15px;
 }
 
+.radio-buttons label {
+  color: #fff;
+}
 /* GALLERY STYLES */
 .search-results-area {
   display: block;
