@@ -20,8 +20,8 @@ function duplicateGalleryAndPopulate(arrayOfItems, gallery, searchResultsArea) {
   }
 }
 
-// Get the required data from axios
-const getDataForQuery = (query, gallery, searchResultsArea) => {
+// Function that promises to fetch data using Nasa Api
+const getNasaDataForQuery = (query, gallery, searchResultsArea) => {
   let config = {
     params: {
       q: query,
@@ -48,10 +48,19 @@ const getDataForQuery = (query, gallery, searchResultsArea) => {
 
 // Function that's called when the button is clicked
 function handleClick(textInput, gallery, searchResultsArea,) {
-  // Move to gallery section only after the download has happened.
-  // i.e., only after the Promise from axios is fulfilled and not just pending
-  getDataForQuery(textInput.value, gallery, searchResultsArea).then(() => {
-    searchResultsArea.scrollIntoView(true);
+  let unsplashRadioButton = document.querySelector("#unsplash-radio");
+  let nasaRadioButton = document.querySelector("#nasa-radio");
+
+  nasaRadioButton.addEventListener("click", () => {
+
+    // Move to gallery only after download, not while in pending state
+    getNasaDataForQuery(textInput.value, gallery, searchResultsArea).then(() => {
+      searchResultsArea.scrollIntoView(true);
+    });
+  });
+
+  unsplashRadioButton.addEventListener("click", () => {
+    alert("unsplash radio button clicked!");
   });
 }
 
@@ -66,7 +75,9 @@ document.addEventListener("DOMContentLoaded", () => {
   button.addEventListener("click", () => {
     // Clear previous search result before new query
     searchResultsArea.innerHTML = "";
-    
+
+    // Write code to reset both radio buttons to "off"
+
     handleClick(textInput, gallery, searchResultsArea);
   });
 });
