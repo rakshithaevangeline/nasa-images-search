@@ -2,7 +2,7 @@
 let axios = require("axios");
 
 // Create duplicates of gallery, populate it, and insert in the right place
-function duplicateGalleryAndPopulate(arrayOfItems, gallery, searchResultsArea) {
+function duplicateGalleryAndPopulateForNasa(arrayOfItems, gallery, searchResultsArea) {
   for (let i = 0; i < arrayOfItems.length; i++) {
     // Make a copy of gallery
     let gallerySearchResult = gallery.cloneNode(true);
@@ -21,11 +21,32 @@ function duplicateGalleryAndPopulate(arrayOfItems, gallery, searchResultsArea) {
   }
 }
 
+function duplicateGalleryAndPopulateForUnsplash(arrayOfItems, gallery, searchResultsArea) {
+  for (let i = 0; i < arrayOfItems.length; i++) {
+    // Make a copy of gallery
+    let galleryCopy = gallery.cloneNode(true);
+    galleryCopy.style.display = "block";
+
+    // Find img and description elements within each copy
+    let thumbnail = galleryCopy.querySelector(".thumbnail img");
+    let thumbDescription = galleryCopy.querySelector(
+      ".thumbnail-description");
+
+    thumbnail.setAttribute("src", arrayOfItems[i].urls.full);
+    console.log(thumbnail.getAttribute("src"));
+    thumbDescription.innerHTML = arrayOfItems[i].alt_description;
+    console.log(thumbDescription.innerHTML);
+
+    // Insert gallery copy inside #search-results-area
+    searchResultsArea.insertAdjacentElement("beforeend", galleryCopy);
+  }
+}
+
 // Function that promises to fetch data using Nasa Api
 const getNasaDataForQuery = (query, gallery, searchResultsArea) => {
   let config = {
     params: {
-      q: query,
+      q: query
     }
   };
 
@@ -34,9 +55,8 @@ const getNasaDataForQuery = (query, gallery, searchResultsArea) => {
     .then((res) => {
       let fullCollection = res.data;
       let arrayOfItems = fullCollection.collection.items;
-      // console.log(arrayOfItems);
-
-      duplicateGalleryAndPopulate(arrayOfItems, gallery, searchResultsArea);
+      
+      duplicateGalleryAndPopulateForNasa(arrayOfItems, gallery, searchResultsArea);
     })
     .catch((e) => {
       console.log(e);
@@ -47,13 +67,32 @@ const getNasaDataForQuery = (query, gallery, searchResultsArea) => {
 };
 
 
+// Get data promise from Unsplash api
+function getUnsplashDataForQuery(query, gallery, searchResultsArea) {
+
+  let downloadPromise = axios
+    .get(`https://api.unsplash.com/search/photos?client_id=LiQoq07yVTc7TFaKvKOgFGnr71nrZEDnrqoddfJ82MM&query=${query}`)
+    .then((res) => {
+      let fullCollection = res.data;
+      let arrayOfItems = fullCollection.results;
+
+      duplicateGalleryAndPopulateForUnsplash(arrayOfItems, gallery, searchResultsArea);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+
+  return downloadPromise;
+}
+  
+
+
 // Function that's called when the button is clicked
 function handleClick(textInput, gallery, searchResultsArea,) {
   let unsplashRadioButton = document.querySelector("#unsplash-radio");
   let nasaRadioButton = document.querySelector("#nasa-radio");
 
   nasaRadioButton.addEventListener("click", () => {
-
     // Move to gallery only after download, not while in pending state
     getNasaDataForQuery(textInput.value, gallery, searchResultsArea).then(() => {
       searchResultsArea.scrollIntoView(true);
@@ -61,7 +100,9 @@ function handleClick(textInput, gallery, searchResultsArea,) {
   });
 
   unsplashRadioButton.addEventListener("click", () => {
-    alert("unsplash radio button clicked!");
+    getUnsplashDataForQuery(textInput.value, gallery, searchResultsArea).then(() => {
+      searchResultsArea.scrollIntoView(true);
+    });
   });
 }
 
