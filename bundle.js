@@ -92,18 +92,16 @@ function handleClick(textInput, gallery, searchResultsArea,) {
   let unsplashRadioButton = document.querySelector("#unsplash-radio");
   let nasaRadioButton = document.querySelector("#nasa-radio");
 
-  nasaRadioButton.addEventListener("click", () => {
-    // Move to gallery only after download, not while in pending state
+  if(nasaRadioButton.checked) {
+    //  Move to gallery only after download, not while in pending state
     getNasaDataForQuery(textInput.value, gallery, searchResultsArea).then(() => {
       searchResultsArea.scrollIntoView(true);
     });
-  });
-
-  unsplashRadioButton.addEventListener("click", () => {
+  } else {
     getUnsplashDataForQuery(textInput.value, gallery, searchResultsArea).then(() => {
       searchResultsArea.scrollIntoView(true);
     });
-  });
+  }
 }
 
 
@@ -117,8 +115,6 @@ document.addEventListener("DOMContentLoaded", () => {
   button.addEventListener("click", () => {
     // Clear previous search result before new query
     searchResultsArea.innerHTML = "";
-
-    // Write code to reset both radio buttons to "off"
 
     handleClick(textInput, gallery, searchResultsArea);
   });
