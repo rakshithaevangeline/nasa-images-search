@@ -1,33 +1,29 @@
-let axios = require("axios");
-let Downloader = require("./base");
+let Downloader = require("./downloader");
 
 class NASADownloader extends Downloader {
-    // Function that promises to fetch data using Nasa Api
-  getNasaDataForQuery(query, gallery, searchResultsArea) {
-    let config = {
+  getConfig(query) {
+    return {
       params: {
         q: query
       }
     };
+  }
 
-    let downloadPromise = axios
-      .get("https://images-api.nasa.gov/search", config)
-      .then((res) => {
-        let fullCollection = res.data;
-        let arrayOfItems = fullCollection.collection.items;
-        
-        this.duplicateGalleryAndPopulateForNasa(arrayOfItems, gallery, searchResultsArea);
-      })
-      .catch((e) => {
-        console.log(e);
-      });
+  getUrl(query) {
+    return "https://images-api.nasa.gov/search";
+  }
 
-    // return the promise so it can be accesed outside of this function
-    return downloadPromise;
+  buildArrayOfItemsFromResponse(res) {
+    return res.data.collection.items;
+  }
+
+  // Function that promises to fetch data using Nasa Api
+  getNasaDataForQuery(query, gallery, searchResultsArea) {
+    return this.getDataForQuery(query, gallery, searchResultsArea);
   };
 
   // Create duplicates of gallery, populate it, and insert in the right place
-  duplicateGalleryAndPopulateForNasa(arrayOfItems, gallery, searchResultsArea) {
+  duplicateGalleryAndPopulate(arrayOfItems, gallery, searchResultsArea) {
     for (let i = 0; i < arrayOfItems.length; i++) {
       // Make a copy of gallery
       let gallerySearchResult = gallery.cloneNode(true);
