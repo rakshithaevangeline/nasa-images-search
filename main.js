@@ -5,16 +5,16 @@ let UnsplashDownloader = require('./downloader/unsplash');
 function handleClick(textInput, gallery, searchResultsArea,) {
   let nasaRadioButton = document.querySelector("#nasa-radio");
 
+  let downloader = undefined;
   if(nasaRadioButton.checked) {
-    //  Move to gallery only after download, not while in pending state
-    new NASADownloader().getDataForQuery(textInput.value, gallery, searchResultsArea).then(() => {
-      searchResultsArea.scrollIntoView(true);
-    });
+    downloader = new NASADownloader();
   } else {
-    new UnsplashDownloader().getDataForQuery(textInput.value, gallery, searchResultsArea).then(() => {
-      searchResultsArea.scrollIntoView(true);
-    });
+    downloader = new UnsplashDownloader();
   }
+
+  downloader.getDataForQuery(textInput.value, gallery, searchResultsArea).then(() => {
+    searchResultsArea.scrollIntoView(true);
+  });
 }
 
 // Search using text input and button
