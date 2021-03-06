@@ -1,5 +1,5 @@
-let nasaDownloader = require('./downloader/nasa');
-let unsplashDownloader = require('./downloader/unsplash');
+let NASADownloader = require('./downloader/nasa');
+let UnsplashDownloader = require('./downloader/unsplash');
 
 // Function that's called when the button is clicked
 function handleClick(textInput, gallery, searchResultsArea,) {
@@ -7,11 +7,11 @@ function handleClick(textInput, gallery, searchResultsArea,) {
 
   if(nasaRadioButton.checked) {
     //  Move to gallery only after download, not while in pending state
-    nasaDownloader.getNasaDataForQuery(textInput.value, gallery, searchResultsArea).then(() => {
+    new NASADownloader().getNasaDataForQuery(textInput.value, gallery, searchResultsArea).then(() => {
       searchResultsArea.scrollIntoView(true);
     });
   } else {
-    unsplashDownloader.getUnsplashDataForQuery(textInput.value, gallery, searchResultsArea).then(() => {
+    new UnsplashDownloader().getUnsplashDataForQuery(textInput.value, gallery, searchResultsArea).then(() => {
       searchResultsArea.scrollIntoView(true);
     });
   }
