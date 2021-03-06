@@ -7,11 +7,11 @@ function handleClick(textInput, gallery, searchResultsArea,) {
 
   if(nasaRadioButton.checked) {
     //  Move to gallery only after download, not while in pending state
-    new NASADownloader().getNasaDataForQuery(textInput.value, gallery, searchResultsArea).then(() => {
+    new NASADownloader().getDataForQuery(textInput.value, gallery, searchResultsArea).then(() => {
       searchResultsArea.scrollIntoView(true);
     });
   } else {
-    new UnsplashDownloader().getUnsplashDataForQuery(textInput.value, gallery, searchResultsArea).then(() => {
+    new UnsplashDownloader().getDataForQuery(textInput.value, gallery, searchResultsArea).then(() => {
       searchResultsArea.scrollIntoView(true);
     });
   }

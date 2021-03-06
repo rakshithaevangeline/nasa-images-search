@@ -17,11 +17,6 @@ class NASADownloader extends Downloader {
     return res.data.collection.items;
   }
 
-  // Function that promises to fetch data using Nasa Api
-  getNasaDataForQuery(query, gallery, searchResultsArea) {
-    return this.getDataForQuery(query, gallery, searchResultsArea);
-  };
-
   // Create duplicates of gallery, populate it, and insert in the right place
   duplicateGalleryAndPopulate(arrayOfItems, gallery, searchResultsArea) {
     for (let i = 0; i < arrayOfItems.length; i++) {

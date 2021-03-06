@@ -13,12 +13,6 @@ class UnsplashDownloader extends Downloader {
     return res.data.results;
   }
 
-
-  // Get data promise from Unsplash api
-  getUnsplashDataForQuery(query, gallery, searchResultsArea) {
-    return this.getDataForQuery(query, gallery, searchResultsArea);
-  }
-
   duplicateGalleryAndPopulate(arrayOfItems, gallery, searchResultsArea) {
     for (let i = 0; i < arrayOfItems.length; i++) {
       // Make a copy of gallery
